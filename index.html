@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oro Woodshop — Website Project</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #faf9f7;
+    --surface: #ffffff;
+    --border: #e8e5e0;
+    --border-mid: #d4d0c8;
+    --text-primary: #1a1916;
+    --text-secondary: #6b6860;
+    --text-tertiary: #9e9b95;
+    --teal-bg: #e6f4ee;
+    --teal-text: #1a6645;
+    --blue-bg: #e8f0fb;
+    --blue-text: #1a4a8a;
+    --coral-bg: #faeae5;
+    --coral-text: #8a2c1a;
+    --purple-bg: #eeedfb;
+    --purple-text: #4a3db0;
+    --green-bg: #eaf4e0;
+    --green-text: #2d5e1a;
+    --amber-bg: #fdf3e3;
+    --amber-text: #7a5010;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 40px 24px 80px;
+  }
+
+  .wrap { max-width: 640px; margin: 0 auto; }
+
+  .page-header {
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .page-header h1 {
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.2px;
+    margin-bottom: 4px;
+  }
+  .page-header p { font-size: 13px; color: var(--text-secondary); }
+
+  .summary-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .summary-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .summary-label {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .summary-val { font-size: 20px; font-weight: 500; letter-spacing: -0.3px; }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin: 28px 0 10px;
+  }
+
+  .phase {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+  .phase-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 16px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+  }
+  .phase-header:hover { background: var(--bg); }
+  .phase-title-row { display: flex; align-items: center; gap: 10px; }
+  .phase-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+  .phase-title { font-size: 14px; font-weight: 500; }
+  .phase-meta { display: flex; align-items: center; gap: 12px; }
+  .hrs-badge {
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .week-badge {
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-weight: 500;
+    white-space: nowrap;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+  }
+  .chevron { font-size: 11px; color: var(--text-tertiary); transition: transform 0.2s; }
+  .chevron.open { transform: rotate(180deg); }
+  .phase-body {
+    display: none;
+    padding: 0 16px 16px;
+    border-top: 1px solid var(--border);
+  }
+  .phase-body.open { display: block; }
+
+  .phase-intro {
+    font-size: 13px;
+    color: var(--text-primary);
+    margin: 12px 0 8px;
+    line-height: 1.6;
+    font-weight: 500;
+  }
+
+  .task-list { margin: 8px 0 0; padding: 0; list-style: none; }
+  .task-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+  .task-list li > span:nth-child(2) { flex: 1; }
+  .task-list li:last-child { border-bottom: none; }
+  .task-hrs {
+    flex-shrink: 0;
+    font-size: 12px;
+    font-weight: 500;
+    min-width: 52px;
+    text-align: right;
+    color: var(--text-tertiary);
+  }
+  .dot {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 8px;
+  }
+
+  .ory-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 8px;
+  }
+  .ory-section-title {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .ory-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+  .ory-item:last-child { border-bottom: none; }
+  .ory-tag {
+    flex-shrink: 0;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-weight: 500;
+    margin-top: 1px;
+  }
+
+  .pages-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .page-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  .page-card-title {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+  .page-card ul {
+    padding-left: 16px;
+  }
+  .page-card ul li {
+    font-size: 12px;
+    color: var(--text-secondary);
+    padding: 2px 0;
+  }
+
+  .timeline-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 4px 0;
+  }
+  .timeline-row {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .timeline-row:last-child { border-bottom: none; }
+  .timeline-week {
+    font-weight: 500;
+    min-width: 60px;
+    flex-shrink: 0;
+  }
+  .timeline-desc { color: var(--text-secondary); }
+
+  .need-from-you {
+    background: var(--amber-bg);
+    border: 1px solid #e8d5a8;
+    border-radius: 10px;
+    padding: 16px;
+    margin-top: 28px;
+  }
+  .need-from-you-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--amber-text);
+    margin-bottom: 10px;
+  }
+  .need-item {
+    display: flex;
+    gap: 10px;
+    padding: 5px 0;
+    font-size: 13px;
+    color: #5a3a08;
+    line-height: 1.5;
+    align-items: flex-start;
+  }
+  .need-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--amber-text);
+    flex-shrink: 0;
+    margin-top: 8px;
+  }
+
+  @media (max-width: 500px) {
+    .summary-bar { grid-template-columns: 1fr 1fr; }
+    .summary-bar .summary-card:last-child { grid-column: span 2; }
+    .pages-grid { grid-template-columns: 1fr; }
+    body { padding: 24px 16px 60px; }
+    .phase-header { flex-wrap: wrap; gap: 8px; }
+    .phase-title-row { flex-wrap: wrap; gap: 6px; }
+    .phase-meta { width: 100%; justify-content: flex-end; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="page-header">
+    <h1>Oro Woodshop &nbsp;·&nbsp; Website Project Plan</h1>
+    <p>Nat Molina for Ory Brockman &nbsp;·&nbsp; Last Updated: <b>June 18, 2026</b></p>
+  </div>
+
+  <div class="summary-bar">
+    <div class="summary-card">
+      <div class="summary-label">Estimated time</div>
+      <div class="summary-val">2–3 weeks</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-label">Total hours</div>
+      <div class="summary-val">14–18 hrs</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-label">Pages</div>
+      <div class="summary-val">4 pages</div>
+    </div>
+  </div>
+
+  <!-- WHAT WE'RE BUILDING -->
+  <div class="section-label">What we're building</div>
+  <div class="ory-section">
+    <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;">A professional, warm portfolio site for Oro Woodshop: 4 pages, light and spacious, where your work speaks for itself. A few featured projects go deeper, showing the process and intention behind what you build. This is the grown-up evolution of Oro: less construction-core and camo, more refined craft and sustainable woodwork. People can browse your portfolio, get inspired for their own projects, learn about you, and reach out. No blog, no frills, nothing unnecessary — just a strong foundation that sets the stage for an online store down the road.</p>
+  </div>
+
+  <!-- SITE OUTLINE -->
+  <div class="section-label">Site Outline</div>
+  <div class="pages-grid" style="margin-bottom:8px">
+    <div class="page-card">
+      <div class="page-card-title">Home</div>
+      <ul style="margin-top: 4px;">
+        <li>Short intro + big hero photo at the top, cycling through a few of your best shots</li>
+        <li>Portfolio preview grid</li>
+        <li>Testimonials in a little carousel</li>
+        <li>Persistent elements include navigation, and Instagram/link to contact form on the footer of every page</li>
+      </ul>
+    </div>
+    <div class="page-card">
+      <div class="page-card-title">Work</div>
+      <ul style="margin-top: 4px;">
+        <li>Full project grid: all projects</li>
+        <li>2–3 featured projects with process photos and a bit of the story behind them</li>
+        <li>Rest are photos + short caption</li>
+      </ul>
+    </div>
+    <div class="page-card">
+      <div class="page-card-title">About</div>
+      <ul style="margin-top: 4px;">
+        <li>Your name + professional bio</li>
+        <li>Photo or illustration, I'll mock something up</li>
+        <li>Sustainability note + mission/values</li>
+      </ul>
+    </div>
+    <div class="page-card">
+      <div class="page-card-title">Contact</div>
+      <ul style="margin-top: 4px;">
+        <li>Form: collects person's name, email, optional phone, message</li>
+        <li>Copy that makes clear you take commissions</li>
+        <li>Instagram link</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PHASES -->
+  <div class="section-label">Timeline</div>
+
+  <div class="phase">
+    <div class="phase-header" onclick="toggle(this)">
+      <div class="phase-title-row">
+        <div class="phase-num" style="background:var(--teal-bg);color:var(--teal-text)">1</div>
+        <span class="phase-title">Getting started</span><span class="week-badge">Week 1</span>
+      </div>
+      <div class="phase-meta">
+        
+        <span class="hrs-badge" style="background:var(--teal-bg);color:var(--teal-text)">2–3 hrs</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="phase-body">
+      <p class="phase-intro">Pre-build steps to get everything I need!</p>
+      <ul class="task-list">
+        <li><span class="dot" style="background:var(--teal-text)"></span><span style="text-decoration:line-through;color:var(--text-tertiary)">Intake call with you to figure out priorities, preferences, any questions, etc.</span><span class="task-hrs" style="color:var(--teal-text)">✓ 0.5 hr</span></li>
+        <li><span class="dot" style="background:var(--teal-text)"></span><span style="text-decoration:line-through;color:var(--text-tertiary)">Go through your portfolio images and branding files</span><span class="task-hrs" style="color:var(--teal-text)">✓ 0.5 hr</span></li>
+        <li><span class="dot" style="background:var(--teal-text)"></span><span>Confirm domain in Squarespace, "coming soon" page, and verify email is working</span><span class="task-hrs">0.5 hr</span></li>
+        <li><span class="dot" style="background:var(--teal-text)"></span><span>Review your reference sites and land on a visual direction + colors</span><span class="task-hrs">1.0 hr</span></li>
+
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-header" onclick="toggle(this)">
+      <div class="phase-title-row">
+        <div class="phase-num" style="background:var(--blue-bg);color:var(--blue-text)">2</div>
+        <span class="phase-title">Writing the copy</span><span class="week-badge">Week 1–2</span>
+      </div>
+      <div class="phase-meta">
+        
+        <span class="hrs-badge" style="background:var(--blue-bg);color:var(--blue-text)">3.5–5 hrs</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="phase-body">
+      <p class="phase-intro">Drafting all the text for the site: headlines, project captions, about, and everything else. You'll get a short doc to read through and react to. 1 round of changes, then we get it in the layout.</p>
+      <ul class="task-list">
+        <li><span class="dot" style="background:var(--blue-text)"></span><span>Draft all site copy based on your brief and our call</span><span class="task-hrs">2.0 hrs</span></li>
+        <li><span class="dot" style="background:var(--blue-text)"></span><span>Send you a plain doc to review...nothing fancy, just the words</span><span class="task-hrs">0.5 hr</span></li>
+        <li><span class="dot" style="background:var(--blue-text)"></span><span>Incorporate your feedback, finalize</span><span class="task-hrs">1.0 hr</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-header" onclick="toggle(this)">
+      <div class="phase-title-row">
+        <div class="phase-num" style="background:var(--coral-bg);color:var(--coral-text)">3</div>
+        <span class="phase-title">Sorting the images</span><span class="week-badge">Week 1–2</span>
+      </div>
+      <div class="phase-meta">
+        
+        <span class="hrs-badge" style="background:var(--coral-bg);color:var(--coral-text)">2–2.5 hrs</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="phase-body">
+      <p class="phase-intro">Getting your photos cropped and edited. Deciding what to include and organizing them into portfolio groups. At minimum it will be 8 items, but I honestly think even the "misc" folder had great stuff, so let's try to use it all!</p>
+      <ul class="task-list">
+        <li><span class="dot" style="background:var(--coral-text)"></span><span>Convert and prep all your portfolio photos for upload</span><span class="task-hrs">0.5 hr</span></li>
+        <li><span class="dot" style="background:var(--coral-text)"></span><span>Curate the strongest 8+ projects</span><span class="task-hrs">0.5 hr</span></li>
+        <li><span class="dot" style="background:var(--coral-text)"></span><span>Sort out logo and branding assets for the header</span><span class="task-hrs">0.5 hr</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-header" onclick="toggle(this)">
+      <div class="phase-title-row">
+        <div class="phase-num" style="background:var(--purple-bg);color:var(--purple-text)">4</div>
+        <span class="phase-title">Building the site</span><span class="week-badge">Week 2</span>
+      </div>
+      <div class="phase-meta">
+        
+        <span class="hrs-badge" style="background:var(--purple-bg);color:var(--purple-text)">4–5 hrs</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="phase-body">
+      <p class="phase-intro">Putting it all together in Squarespace! Plus connecting your domain and making sure everything looks right on a phone.</p>
+      <ul class="task-list">
+        <li><span class="dot" style="background:var(--purple-text)"></span><span>Set up template, fonts, and colors</span><span class="task-hrs">0.5 hr</span></li>
+        <li><span class="dot" style="background:var(--purple-text)"></span><span>Build all four pages with final copy and images</span><span class="task-hrs">2.5 hrs</span></li>
+        <li><span class="dot" style="background:var(--purple-text)"></span><span>Connect orowoodshop.com and get SSL sorted</span><span class="task-hrs">0.5–1.0 hr</span></li>
+        <li><span class="dot" style="background:var(--purple-text)"></span><span>Check everything on mobile</span><span class="task-hrs">0.5 hr</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-header" onclick="toggle(this)">
+      <div class="phase-title-row">
+        <div class="phase-num" style="background:var(--green-bg);color:var(--green-text)">5</div>
+        <span class="phase-title">Review &amp; go live</span><span class="week-badge">Week 2–3</span>
+      </div>
+      <div class="phase-meta">
+        
+        <span class="hrs-badge" style="background:var(--green-bg);color:var(--green-text)">1.5–2.5 hrs</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="phase-body">
+      <p class="phase-intro">You get a preview link, tell me what to fix, and we launch. I'll also record a short video showing you how to update things yourself so you can be in the matrix and do your own edits!</p>
+      <ul class="task-list">
+        <li><span class="dot" style="background:var(--green-text)"></span><span>Send you a preview link to review</span><span class="task-hrs">0.25 hr</span></li>
+        <li><span class="dot" style="background:var(--green-text)"></span><span>One round of changes based on your feedback</span><span class="task-hrs">0.5–1.0 hr</span></li>
+        <li><span class="dot" style="background:var(--green-text)"></span><span>Flip it live, confirm everything works</span><span class="task-hrs">0.25 hr</span></li>
+        <li><span class="dot" style="background:var(--green-text)"></span><span>Short video walkthrough so you can update it yourself</span><span class="task-hrs">0.5 hr</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- WHAT I NEED FROM YOU -->
+  <div class="need-from-you">
+    <div class="need-from-you-title">What could be helpful from you</div>
+    <div class="need-item"><span class="need-dot"></span><span>For the featured projects: I'll check out your IG, but if there's a story behind any of your builds (materials you repurposed, a tricky problem you solved, anything like that) just text me a couple sentences or send a voice note if something comes to you. Optional!</span></div>
+    <div class="need-item"><span class="need-dot"></span><span>Testimonials: I'll write my own for my cutting board, but if you want to reach out to a couple past clients that would be great. Would be ideal to have 3-5 at launch.</span></div>
+  </div>
+
+</div>
+
+<script>
+  function toggle(header) {
+    const body = header.nextElementSibling;
+    const chevron = header.querySelector('.chevron');
+    body.classList.toggle('open');
+    chevron.classList.toggle('open');
+  }
+
+</script>
+</body>
+</html>
