@@ -297,9 +297,22 @@
     .summary-bar .summary-card:last-child { grid-column: span 2; }
     .pages-grid { grid-template-columns: 1fr; }
     body { padding: 24px 16px 60px; }
-    .phase-header { flex-wrap: wrap; gap: 8px; }
-    .phase-title-row { flex-wrap: wrap; gap: 6px; }
-    .phase-meta { width: 100%; justify-content: flex-end; }
+    .phase-header {
+      flex-wrap: wrap;
+      position: relative;
+      padding-right: 32px;
+    }
+    .phase-title-row { width: 100%; }
+    .phase-meta {
+      margin-left: 34px;
+      margin-top: 2px;
+      gap: 6px;
+    }
+    .chevron {
+      position: absolute;
+      right: 16px;
+      top: 16px;
+    }
   }
 </style>
 </head>
@@ -377,10 +390,10 @@
     <div class="phase-header" onclick="toggle(this)">
       <div class="phase-title-row">
         <div class="phase-num" style="background:var(--teal-bg);color:var(--teal-text)">1</div>
-        <span class="phase-title">Getting started</span><span class="week-badge">Week 1</span>
+        <span class="phase-title">Getting started</span>
       </div>
       <div class="phase-meta">
-        
+        <span class="week-badge">Week 1</span>
         <span class="hrs-badge" style="background:var(--teal-bg);color:var(--teal-text)">2–3 hrs</span>
         <span class="chevron">▼</span>
       </div>
@@ -401,10 +414,10 @@
     <div class="phase-header" onclick="toggle(this)">
       <div class="phase-title-row">
         <div class="phase-num" style="background:var(--blue-bg);color:var(--blue-text)">2</div>
-        <span class="phase-title">Writing the copy</span><span class="week-badge">Week 1–2</span>
+        <span class="phase-title">Writing the copy</span>
       </div>
       <div class="phase-meta">
-        
+        <span class="week-badge">Week 1–2</span>
         <span class="hrs-badge" style="background:var(--blue-bg);color:var(--blue-text)">3.5–5 hrs</span>
         <span class="chevron">▼</span>
       </div>
@@ -423,10 +436,10 @@
     <div class="phase-header" onclick="toggle(this)">
       <div class="phase-title-row">
         <div class="phase-num" style="background:var(--coral-bg);color:var(--coral-text)">3</div>
-        <span class="phase-title">Sorting the images</span><span class="week-badge">Week 1–2</span>
+        <span class="phase-title">Sorting the images</span>
       </div>
       <div class="phase-meta">
-        
+        <span class="week-badge">Week 1–2</span>
         <span class="hrs-badge" style="background:var(--coral-bg);color:var(--coral-text)">2–2.5 hrs</span>
         <span class="chevron">▼</span>
       </div>
@@ -445,10 +458,10 @@
     <div class="phase-header" onclick="toggle(this)">
       <div class="phase-title-row">
         <div class="phase-num" style="background:var(--purple-bg);color:var(--purple-text)">4</div>
-        <span class="phase-title">Building the site</span><span class="week-badge">Week 2</span>
+        <span class="phase-title">Building the site</span>
       </div>
       <div class="phase-meta">
-        
+        <span class="week-badge">Week 2</span>
         <span class="hrs-badge" style="background:var(--purple-bg);color:var(--purple-text)">4–5 hrs</span>
         <span class="chevron">▼</span>
       </div>
@@ -468,10 +481,10 @@
     <div class="phase-header" onclick="toggle(this)">
       <div class="phase-title-row">
         <div class="phase-num" style="background:var(--green-bg);color:var(--green-text)">5</div>
-        <span class="phase-title">Review &amp; go live</span><span class="week-badge">Week 2–3</span>
+        <span class="phase-title">Review &amp; go live</span>
       </div>
       <div class="phase-meta">
-        
+        <span class="week-badge">Week 2–3</span>
         <span class="hrs-badge" style="background:var(--green-bg);color:var(--green-text)">1.5–2.5 hrs</span>
         <span class="chevron">▼</span>
       </div>
